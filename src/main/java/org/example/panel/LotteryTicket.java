@@ -15,7 +15,7 @@ public class LotteryTicket {
     int count;
     List<JButton> buttonList;
     List<ActionListener> listenerList;
-
+//
     public void createNewTicket() {
         JFrame frame = new JFrame();
         buttonList = new ArrayList<>();
