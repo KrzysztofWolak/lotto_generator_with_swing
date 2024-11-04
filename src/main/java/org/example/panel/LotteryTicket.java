@@ -18,7 +18,7 @@ public class LotteryTicket {
 
     protected int count;
     JButton editButton = new JButton("EDIT");
-    JButton pdfButton = new JButton("Create PDF");
+
     JButton simulator = new JButton("Start lottery Simulation");
     List<JButton> buttonList;
     Set<Integer> chooseNumbers = new HashSet<>();
@@ -31,22 +31,11 @@ public class LotteryTicket {
         JFrame frame = new JFrame();
         buttonList = new ArrayList<>();
 
-        pdfButton.setEnabled(false);
-        pdfButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DocumentGenerator generator = new DocumentGenerator();
-                generator.createPDFFile(frame, LotteryTicket.this);
-                pdfButton.setEnabled(false);
-            }
-        });
-
         editButton.setEnabled(false);
         editButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mainButtonsListenAgain(buttonList, LotteryTicket.this);
                 chooseNumbers.removeAll(chooseNumbers);
-                pdfButton.setEnabled(false);
                 editButton.setEnabled(false);
                 simulator.setEnabled(false);
             }
@@ -62,7 +51,6 @@ public class LotteryTicket {
                     if (count == 6) {
                         listenerEraser(buttonList);
                         System.out.println("Button blocked");
-                        pdfButton.setEnabled(true);
                         editButton.setEnabled(true);
                         simulator.setEnabled(true);
                     }
@@ -82,7 +70,6 @@ public class LotteryTicket {
             }
         });
         frame.add(editButton);
-        frame.add(pdfButton);
         frame.add(simulator);
         frame.setSize(350, 400);
         frame.setLayout(new FlowLayout());

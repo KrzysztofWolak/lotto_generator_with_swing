@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.example.panel.LotterySimulatonDialog;
 import org.example.panel.LotteryTicket;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class DocumentGenerator{
     public DocumentGenerator() {
     }
 
-    public void createPDFFile (JFrame frame, LotteryTicket ticket) {
+    public void createPDFFile (LotteryTicket ticket, LotterySimulatonDialog lsd) {
         Calendar c = Calendar.getInstance();
         String filename = "C:\\Users\\Admin\\Desktop\\Training\\lotto-generator-with-swing\\src\\PDF_files\\ticket_from"
                 + "_" + c.get(Calendar.HOUR_OF_DAY)
@@ -33,12 +34,13 @@ public class DocumentGenerator{
         PDPageContentStream p = new PDPageContentStream(document, page1);
 
 
-            writeTitle(p, 90, 750, 25 , "Twoje wybrane numery w Lotto");
+            writeTitle(p, 90, 750, 25 , "Your chosen lottery numbers");
             writeNewLine(p, 40, 700, "Ticket :  ", returnNumbers(ticket));
+            writeNewLine(p, 40, 670, "Number of draws needed (Last attempt) :  ", String.valueOf(lsd.getNeededDraws()));
             p.close();
             document.save(filename);
             document.close();
-            JOptionPane.showMessageDialog(frame, "PDF file created in: \n" +
+            JOptionPane.showMessageDialog(lsd.getLotteryDialog(), "PDF file created in: \n" +
                     "C:/Users/Admin/Desktop/Training/lotto-generator-with-swing/src/PDF_files");
 
         }catch (IOException e) {
@@ -81,7 +83,7 @@ public class DocumentGenerator{
         for (int s : ticket.getChooseNumbers()) {
             numbers += String.valueOf(s) + ", ";
         }
-        numbers = numbers.substring(0, numbers.length()-3);
+        numbers = numbers.substring(0, numbers.length()-2);
         return numbers;
     }
 
