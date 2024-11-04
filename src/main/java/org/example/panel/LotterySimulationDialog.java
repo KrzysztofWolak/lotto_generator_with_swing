@@ -8,11 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LotterySimulatonDialog {
+public class LotterySimulationDialog {
 
     JComboBox numOfHits;
-    
-    
     long neededDraws;
     JDialog lotteryDialog;
 
@@ -24,10 +22,11 @@ public class LotterySimulatonDialog {
         return neededDraws;
     }
 
-    public LotterySimulatonDialog(JFrame frame, LotteryTicket ticket) {
+    public LotterySimulationDialog(JFrame frame, LotteryTicket ticket) {
         
         //DIALOG
         lotteryDialog = new JDialog(frame);
+        lotteryDialog.setTitle("Select number of hits in lottery");
 
         
         //BUTTONS
@@ -80,7 +79,7 @@ public class LotterySimulatonDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DocumentGenerator generator = new DocumentGenerator();
-                generator.createPDFFile(ticket, LotterySimulatonDialog.this);
+                generator.createPDFFile(ticket, LotterySimulationDialog.this);
                 pdfButton.setEnabled(false);
             }
         });

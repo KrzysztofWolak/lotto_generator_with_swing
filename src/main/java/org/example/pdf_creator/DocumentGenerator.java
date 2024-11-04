@@ -1,12 +1,10 @@
 package org.example.pdf_creator;
 
-import com.sun.source.tree.BreakTree;
-import com.sun.source.tree.ReturnTree;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.example.panel.LotterySimulatonDialog;
+import org.example.panel.LotterySimulationDialog;
 import org.example.panel.LotteryTicket;
 
 import javax.swing.*;
@@ -20,12 +18,12 @@ public class DocumentGenerator{
     public DocumentGenerator() {
     }
 
-    public void createPDFFile (LotteryTicket ticket, LotterySimulatonDialog lsd) {
+    public void createPDFFile (LotteryTicket ticket, LotterySimulationDialog lsd) {
         Calendar c = Calendar.getInstance();
         String filename = "C:\\Users\\Admin\\Desktop\\Training\\lotto-generator-with-swing\\src\\PDF_files\\ticket_from"
-                + "_" + c.get(Calendar.HOUR_OF_DAY)
-                + "_" + c.get(Calendar.MINUTE)
-                + "_" + c.get(Calendar.SECOND)
+                + "_" + c.get(Calendar.DAY_OF_MONTH)
+                + "_" + c.get(Calendar.MONTH)
+                + "_" + c.get(Calendar.MILLISECOND)
                 + ".pdf";
         try {
         PDDocument document = new PDDocument();
@@ -41,7 +39,7 @@ public class DocumentGenerator{
             document.save(filename);
             document.close();
             JOptionPane.showMessageDialog(lsd.getLotteryDialog(), "PDF file created in: \n" +
-                    "C:/Users/Admin/Desktop/Training/lotto-generator-with-swing/src/PDF_files");
+                    "lotto-generator-with-swing/src/PDF_files");
 
         }catch (IOException e) {
             e.printStackTrace();
@@ -78,6 +76,7 @@ public class DocumentGenerator{
         }
     }
 
+    // Selected lottery numbers to save to pdf file
     private static String returnNumbers ( LotteryTicket ticket) {
         String numbers = "";
         for (int s : ticket.getChooseNumbers()) {
