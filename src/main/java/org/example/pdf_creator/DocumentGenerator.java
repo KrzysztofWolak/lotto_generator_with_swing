@@ -1,5 +1,7 @@
 package org.example.pdf_creator;
 
+import com.sun.source.tree.BreakTree;
+import com.sun.source.tree.ReturnTree;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -17,12 +19,12 @@ public class DocumentGenerator{
     public DocumentGenerator() {
     }
 
-    public void createPDFFile (JFrame frame) {
+    public void createPDFFile (JFrame frame, LotteryTicket ticket) {
         Calendar c = Calendar.getInstance();
         String filename = "C:\\Users\\Admin\\Desktop\\Training\\lotto-generator-with-swing\\src\\PDF_files\\ticket_from"
                 + "_" + c.get(Calendar.HOUR_OF_DAY)
                 + "_" + c.get(Calendar.MINUTE)
-                + "_" + c.get(Calendar.MILLISECOND)
+                + "_" + c.get(Calendar.SECOND)
                 + ".pdf";
         try {
         PDDocument document = new PDDocument();
@@ -30,11 +32,15 @@ public class DocumentGenerator{
         document.addPage(page1);
         PDPageContentStream p = new PDPageContentStream(document, page1);
 
+
             writeTitle(p, 90, 750, 25 , "Twoje wybrane numery w Lotto");
-            writeCarParameters(p, 40, 700, "Ticket :  ", "Numbers");
+            writeNewLine(p, 40, 700, "Ticket :  ", returnNumbers(ticket));
             p.close();
             document.save(filename);
             document.close();
+            JOptionPane.showMessageDialog(frame, "PDF file created in: \n" +
+                    "C:/Users/Admin/Desktop/Training/lotto-generator-with-swing/src/PDF_files");
+
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,10 +59,10 @@ public class DocumentGenerator{
         }
     }
 
-    public static void writeCarParameters(PDPageContentStream content,
-                                          int tx, int ty,
-                                          String text,
-                                          String text2) {
+    public static void writeNewLine(PDPageContentStream content,
+                                    int tx, int ty,
+                                    String text,
+                                    String text2) {
         try{
             content.beginText();
             content.newLineAtOffset(tx, ty); // 595 x 842\
@@ -69,4 +75,15 @@ public class DocumentGenerator{
             e.printStackTrace();
         }
     }
+
+    private static String returnNumbers ( LotteryTicket ticket) {
+        String numbers = "";
+        for (int s : ticket.getChooseNumbers()) {
+            numbers += String.valueOf(s) + ", ";
+        }
+        numbers = numbers.substring(0, numbers.length()-3);
+        return numbers;
+    }
+
+
 }
