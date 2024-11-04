@@ -20,7 +20,6 @@ public class LotteryTicket {
     JButton editButton = new JButton("EDIT");
     JButton pdfButton = new JButton("Create PDF");
     JButton simulator = new JButton("Start lottery Simulation");
-    JComboBox numOfHits;
     List<JButton> buttonList;
     Set<Integer> chooseNumbers = new HashSet<>();
 
@@ -29,10 +28,6 @@ public class LotteryTicket {
     }
 
     public LotteryTicket() {
-        String[] num = {"1", "2", "3", "4", "5", "6" };
-       numOfHits = new JComboBox(num);
-       numOfHits.setName("Choose number of Hits and start Lottery");
-
         JFrame frame = new JFrame();
         buttonList = new ArrayList<>();
 
@@ -48,7 +43,6 @@ public class LotteryTicket {
 
         editButton.setEnabled(false);
         editButton.addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent e) {
                 mainButtonsListenAgain(buttonList, LotteryTicket.this);
                 chooseNumbers.removeAll(chooseNumbers);
@@ -57,14 +51,11 @@ public class LotteryTicket {
                 simulator.setEnabled(false);
             }
         });
-
-
         for (int i = 1; i < 50; i++) {
             JButton button = new JButton("" + i);
             ActionListener listener = new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    button.setSelected(true);
                     button.setEnabled(false);
                     count++;
                     chooseNumbers.add(Integer.parseInt(button.getText()));
@@ -81,33 +72,23 @@ public class LotteryTicket {
             frame.add(button);
             buttonList.add(button);
         }
-
-
         simulator.setEnabled(false);
         simulator.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startLottery(frame, chooseNumbers);
+                LotterySimulatonDialog lotterySimulatonDialog
+                        =  new LotterySimulatonDialog(frame, LotteryTicket.this);
+                frame.setEnabled(false);
             }
         });
-
-
         frame.add(editButton);
         frame.add(pdfButton);
-        frame.add(numOfHits);
         frame.add(simulator);
         frame.setSize(350, 400);
         frame.setLayout(new FlowLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
-
-    private void startLottery(JFrame frame, Set<Integer> chooseNumbers) {
-        LotterySimulator lotterySimulator = new LotterySimulator();
-        long result = lotterySimulator.startSimulator(chooseNumbers, 2);
-        JOptionPane.showMessageDialog(frame,
-                "Number of draws to match 2 of 6 lottery numbers: " + result);
     }
 
     private void listenerEraser(List<JButton> buttonList) {
@@ -125,7 +106,6 @@ public class LotteryTicket {
         chooseNumbers.removeAll(chooseNumbers);
         for (JButton button : buttonList) {
             button.setEnabled(true);
-            button.setSelected(false);
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -137,7 +117,7 @@ public class LotteryTicket {
                     if (count == 6) {
                         listenerEraser(buttonList);
                         System.out.println("Button blocked");
-                        pdfButton.setEnabled(true);
+//                        pdfButton.setEnabled(true);
                         editButton.setEnabled(true);
                         simulator.setEnabled(true);
                     }
